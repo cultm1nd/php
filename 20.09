@@ -1,0 +1,41 @@
+4 ЗАДАЧА
+<?php
+$cols=5;
+$rows=6;
+echo '<table border="1"; cellpadding="3px"; cellspacing="0px">';
+for($i=1;$i<=$rows;$i++)
+{
+    echo '<tr>';
+    for($j=1;$j<=$rows;$j++)
+    {
+        $value=$i*$j;
+        echo '<td';
+        echo '>'.$i.'*'.$j.'='.$i*$j.'</td>';
+    }
+    echo '</tr>';
+}
+echo '</table>';
+?>
+5 ЗАДАЧА
+<?php
+$cols=8;
+$rows=8;
+echo "<table cellpadding='3px' cellspacing='0px' width='270px' border='2px'> ";
+for($i=1;$i<=$rows;$i++)
+{
+    echo "<tr>";
+    for($j=1;$j<=$cols;$j++)
+    {
+        if(($i+$j)%2==0)
+        {
+            echo "<td style='background-color:black; border:1 px solid black;'height='30px' width='30px'>"."</td>";
+        }
+        else
+        {
+            echo "<td style='background-color:white; border:1 px solid black;'height='30px' width='30px'>"."</td>";
+        }
+    }
+    echo "</tr>";
+}
+echo "</table>";
+?>
