@@ -1,0 +1,42 @@
+<?php
+//5 Напишите РНР-скрнит для расчрта н отображения средней температуры, пяти самых низких и самых высоких температур.
+$temp = [1,2,10,-27,25, 27, 23, 20, 18, -3, 28, 26, 22, -30,-25, 40,15];
+function srTemp($temp) 
+{
+    $sum = array_sum($temp);
+    $count = count($temp);
+    return round($sum / $count,2);
+}
+
+function lowestTemp($temp) 
+{
+    sort($temp);
+    return array_slice($temp, 0, 5);//0 тк так начинаем отсчет с 1 эл-а, 5 тк нужно всего 5
+}
+
+function highestTemp($temp)
+ {
+    rsort($temp);
+    return array_slice($temp, 0, 5);
+}
+echo "средняя температура: " . srTemp($temp) . " градусов<br>";
+echo "пять самых низких температур: " . implode(", ", lowestTemp($temp)) . " градусов<br>";
+echo "пять самых высоких температур: " . implode(", ", highestTemp($temp)) . " градусов.";
+
+?>
+
+<?php
+//6
+$my_array = array('элемент 1', 'элемент 2', 'элемент 3', 'элемент 4');
+array_splice($my_array, 2, 0, 'новый элемент');
+?>
+
+<?php
+//7 Дан массив S color = array (white', 'green', red"). Вывести списком его элементы отсортированные по возрастанию
+$color=array('white', 'green', 'red');
+sort($color);
+foreach($color as $color)//перебирает все эл-ы массива 
+{
+    echo $color."<br>";
+}
+?>
