@@ -27,8 +27,13 @@ echo "пять самых высоких температур: " . implode(", ",
 
 <?php
 //6
-$my_array = array('элемент 1', 'элемент 2', 'элемент 3', 'элемент 4');
-array_splice($my_array, 2, 0, 'новый элемент');
+$arr=array(1,2,3,4,5);
+$r=rand(0, count($arr)-1);
+$arr[$r]='$';
+foreach($arr as $key => $value)
+{
+    echo $value.' ';
+}
 ?>
 
 <?php
@@ -39,4 +44,46 @@ foreach($color as $color)//перебирает все эл-ы массива
 {
     echo $color."<br>";
 }
+?>
+
+<?php
+//8
+$size=rand(3,20);
+$arr=array();
+for($i=0;$i<$size;$i++)
+{
+    $arr[$i]=rand(10,99);//заполнение случ 2знач числами
+}
+echo "массив из $size элементов, заполненный случайными числами: ";
+foreach($arr as $num)
+{
+    echo $num." ";
+}
+sort($arr);
+echo"<br> отсортированный массив: ".implode(" ",$arr);
+
+$arr=array_reverse(($arr));
+echo"<br> элементы массива в обратном порядке: ".implode(" ",$arr);
+
+array_pop($arr);
+echo"<br> массив после удаления последнего элемента: ".implode(" ",$arr);
+
+$sum=array_sum($arr);
+$count=count($arr);
+echo"<br> сумма элементов массива: $sum";
+echo"<br> количество элементов в массиве: $count";
+
+$sr=$sum/$count;
+echo"<br> среднее арифметическое массива: ".round($sr,2);
+
+if(in_array(50,$arr))
+{
+    echo"<br> число 50 есть в массиве ";
+}
+else{
+    echo"<br> числа 50 нет в массиве ";
+}
+
+$arr=array_unique($arr);
+echo"<br> массив из уникальных значений: ".implode(" ",$arr);
 ?>
