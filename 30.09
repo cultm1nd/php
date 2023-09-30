@@ -1,0 +1,203 @@
+<?php
+//1 Задача 1. Напишите функцию, которая принимает на вход два аргумента по ссылкам и умножает каждый из них на 2.
+$a=rand(0,100);
+$b=rand(0,100);
+function func(&$a,&$b)
+{
+   $a*=2;
+   $b*=2;
+}
+func($a,$b);
+echo $a.",".$b;
+?>
+<?php
+//Задача 2. Напишите функцию, которая будет выводить на экран целые числа от 0 до переданного значения.
+$n=rand(0,100);
+function func($n)
+{
+    for($i=0;$i<=$n;$i++)
+    {
+        echo $i." ";
+    }
+}
+func($n);
+
+?>
+<?php
+//Задача 3. Написать функцию, которая ищет максимальный элемент массива и его индекс.
+//$arr=array(rand(1,100));
+$arr=array(1,2, 3, 4, 5, 6, 7, 8,9,10);
+function func_max($arr)
+{
+   $max=$arr[0];
+   $index=0;
+   for($i=1;$i<count($arr);$i++)
+   {
+    if($arr[$i]>$max)
+    {
+        $max=$arr[$i];
+        $index=$i;
+    }
+   }
+   echo "максимальный элемент: ".$max."<br>";
+   echo "его индекс: ".$index;
+}
+func_max($arr);
+
+?>
+<?php
+//Задача 4. Написать функцию max(x, y), находящую максимальное значение из двух чисел. 
+//С ее помощью найти максимальное значение из четырёх чисел a, b, c, d.
+function func_max($x, $y)
+{
+  $max=0;
+  if($max>$x)
+  {
+    $max=$x;
+  }
+  if($max>$y)
+  {
+    $max=$y;
+  }
+  echo" максимальное значение= ".$max;
+}
+echo max(1,22, 333, 4444);
+?>
+<?php
+//Задача 5. Написать анонимную функцию, которая у чётных чисел меняет знак, 
+//а нечётные числа оставляет без изменения. С ее помощью обработать ряд чисел от 1 до 20.
+$anon=function($num)
+{
+    for($i=1;$i<=$num;$i++)
+    {
+    if($i%2==0)
+    {
+        echo $i*(-1).", ";
+    }
+    else
+    {
+        echo $i.", ";
+    }
+}
+};
+
+$anon(20);
+
+?>
+<?php
+//Задача 6. Написать функцию, которая вычисляет значения x=sin2(a) и y=cos2(a). Напечатать таблицу значений от –π до π с шагом π/4.
+function paint()
+{
+for($i=M_PI;$i<=M_PI;$i+=M_PI/4)
+{
+    $x=sin($i)**2;
+    $y=cos($i)**2;
+    //таблица
+    echo '<tr>';
+    echo '<td>'.number_format($i,2).'</td>';
+    echo '<td>'.number_format($x,2).'</td>';
+    echo '<td>'.number_format($y,2).'</td>';
+    echo '<tr>';
+}
+}
+echo '<table border="1"; cellpadding="1px"; cellspacing="0px">';
+echo '<tr';
+echo '<td> π </td>';
+echo '<td> x </td>';
+echo '<td>  y </td>';
+echo '<tr>';
+paint();
+echo '</table>';
+?>
+<?php
+//Задача 7.  Описать функцию с одним аргументом, возвращающую степень двойки.
+// Степень передавать в качестве аргумента. Установить значение по умолчанию (=2) для аргумента
+function func($a=2)
+{
+    echo 2**$a;
+}
+$pow=rand(0,50);//random pow
+echo " - степень двойки= ".$pow.func($pow)."<br>";
+echo " - стпень по умолчанию ".func()."<br>";
+?>
+<?php
+//Задача 8. Задайте двумерный массив, содержащий сведения о студентах группы (№пп, ФИО, возраст, пол). Создайте скрипт, выводящий все элементы массива в виде HTML–таблицы (используйте для этого цикл foreach):
+//№ пп
+//ФИО
+//возраст пол
+//а) Создайте функцию поиска в массиве студентов самого молодого студента.
+//б) Реализуйте функцию поиска в массиве информации о студенте с заданной фамилией.
+$students=array(
+array(1,"Ivanov Ivan Ivanovich",17,"male"),
+array(2,"Stepanov Stepan Stepanovich",18,"male"),
+array(3,"Reznova Anna Ivanovna",19,"female")
+);
+//молодой
+function younger($students)
+{
+$min=1000;
+$youngAge=$students[1][2];
+$youngStudent=$students[1];
+foreach($students as $student)
+{
+if($student[2]<$min)
+{
+   $min= $student[2];
+    $youngAge=$student[2];
+    $youngStudent=$student;
+}
+}
+return $youngStudent;
+}
+
+//фамилия
+function surname($students, $surname)
+{
+    foreach($students as $student)
+    {
+        if(strpos($student[1], $surname)!==false)//strpos разбивает 3 слова и смотрит есть ли нужная подстрока
+        {
+            return $student;
+        }
+    }
+    return null;
+}
+$youngStudent=younger($students);
+echo "самый молодой студент: ".$youngStudent[1].", возраст".
+$youngStudent[2]."<br>";
+
+$surname="Ivanov";
+$student=surname($students,$surname);
+if($student!=null)
+{
+    echo "студент с фамилией ".$surname.": ".$student[1].", возраст= ".$student[2]."<br>";
+}
+else{
+    echo "студент с фамилией ".$surname." не найден"."<br>"; 
+}
+?>
+<?php
+//9
+//ассоциативный массив с ключами(ключ-значение)
+$menu=array(
+    "home "=>"home.php",
+    "about "=>"about.php",
+    "contact "=>"contact.php",
+    );
+   function getMenu($menu,$vertical=true)
+   {
+    foreach($menu as $key=> $value)//чтобы перебирало в нужном Фформате
+    {
+        if($vertical==true)
+        {
+            echo '<a href='.$value.'>'.$key.'</a>'.'<br>';
+        }
+        else
+        {
+            echo '<a href='.$value.'>'.$key.'</a>';
+        };
+    }
+   }
+   getMenu($menu);
+   getMenu($menu, false);
+?>
