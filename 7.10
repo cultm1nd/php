@@ -1,0 +1,41 @@
+Copyright &copy; 
+<?php 
+  $first = 2014; 
+  $currentYear = (int)date('Y'); //возвращает текущий год
+  echo $first . (($first != $currentYearn) ? '-' . $currentYear : '');
+?>
+, все права защищены.
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--Написать программу отсчета дней до дня рождения. Она должна содержать
+форму ввода дня, месяца и года и выводить сообщение о том, сколько дней, часов,
+минут и секунд осталось до дня рождения.-->
+<form action="2.php" method="post">
+    <p>введите свой день рождения</p>
+    день<input type="number" name="day" min="1" max="31" ><br>
+    месяц<input type="number" name="month" min="1" max="12" ><br>
+    год<input type="number" name="year" min="1900" max="2099" > <br>
+    <input type="submit" value="узнать">
+
+</form>
+</body>
+</html>
+
+<?php
+$birthday=strtotime($_POST['year'].'-'.$_POST['month'].'-'.$_POST['day']);//преобраз в формат времнеи unix
+$cur_time=time();//current time
+$dif=$birthday-$cur_time;//вычисление разницы между датой рождения и текущим врменем
+$days=floor($dif/(60*60*24));
+$hours=floor(($dif%(60*60*24))/(60*60));
+$minutes=floor(($dif%(60*60))/(60));
+$sec=$dif%60;
+echo 'до дня рождения: '.$days.' дней, '.$hours.' часов, '.$minutes.' минут, '.$sec.' секунд.';
+?>
