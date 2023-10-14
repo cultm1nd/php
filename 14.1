@@ -1,0 +1,76 @@
+
+1.	Создать форму, с помощью которой пользователь может задать свой ник и выбрать цвет фона страниц сайта. Использовать cookie для того, чтобы приветствовать пользователя по имени на следующих страницах с заданным фоном.
+<form method='get'>
+    <input type='text' name='nik'>
+    <input type='color' name='back'>
+    <input type='submit' name='click'>
+</form>
+
+<?php
+$nik=$_GET['nik'];
+$back=$_GET['back'];
+setcookie('nik', $nik,time()+600);
+setcookie('back', $back,time()+600);
+echo '<body style="background-color:'.$back.';">';
+if(isset($_COOKIE['nik']))
+{
+    echo "<p> Hello, ".$_COOKIE['nik']." </p>";
+}
+if(isset($_COOKIE['back']))
+{
+    echo "<p> color:".$_COOKIE['back']." </p>";
+}
+?>
+
+2.	Реализовать задачу 1 с использованием функций управления сессией.
+<form method='get'>
+    <input type='text' name='nik'>
+    <input type='color' name='back'>
+    <input type='submit' name='click'>
+</form>
+
+<?php
+session_start();
+$nik=$_GET['nik'];
+$back=$_GET['back'];
+//session
+$_SESSION['nik']=$_GET['nik'];
+$_SESSION['back']=$_GET['back'];
+echo '<body style="background-color:'.$back.';">';
+if(isset($_SESSION['nik']))
+{
+    $nik=$_SESSION['nik'];
+    echo "<p> Hello, ".$_SESSION['nik']." </p>";
+}
+if(isset($_SESSION['back']))
+{
+    $back=$_SESSION['back'];
+    echo "<p> background-color:".$_SESSION['back']." </p>";
+}
+?>
+
+<form method='get'>
+    <p>введите логин</p><input type='text' name='login'>
+    <input type='submit' value='click'>
+</form>
+<?php
+$time=date('i');
+if(isset($_GET['login']))
+{
+    //устанавливаем куки с логином и тек временем
+    setcookie('login', $_GET['login'],time()+3600);
+    setcookie('last_visit', time(), time()+3600);
+}
+if(isset($_COOKIE['login']))
+{
+    //приветствие+ логин, ласт выход
+    echo"Hello, ".$_COOKIE['login']."<br>";
+    echo"Last visit: ".$_COOKIE['last_visit'];
+}
+
+?>
+1.	Создать форму, с помощью которой пользователь может задать свой ник и выбрать цвет фона страниц сайта. Использовать cookie для того, чтобы приветствовать пользователя по имени на следующих страницах с заданным фоном.
+2.	Реализовать задачу 1 с использованием функций управления сессией.
+3.	Написать программу, которая применяет функции управления сессией для запоминания того, какие страницы уже посещались пользователем. Вывести список ссылок на все посещенные страницы.
+4.	Создайте куки с логином посетителя и временем последнего захода. Куки должны хранится максимум 1 час. Примечание: возможно понадобится форма для ввода логина.
+5.	Создать страницы с расширением php: 1-я - для установки личных данных (ФИО, e-mail) (значения не вводят через поля формы), 2-й выводит форму для отправки письма с подставленным значениями в поля e-mail и «КОМУ". Использовать cookie или сессии.
