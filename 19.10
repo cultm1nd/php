@@ -1,0 +1,132 @@
+<?php
+/*1.Создать класс Cat с открытыми свойствами имя, цвет, вес и методом, 
+выводящим на экран  «Привет! Меня зовут …». 
+Создать два объекта данного класса и вывести для каждого приветствия.*/ 
+class Cat
+{
+    public string $name;
+    public string $color;
+    public string $weight;
+    public function __construct(string $name,string $color,int $weight)
+    {
+ $this->name=$name;
+ $this->color=$color;
+ $this->weight=$weight;
+    }
+    public function getName()
+    {
+return $this->name;
+    }
+    public function getColor()
+    {
+        return $this->color;
+    }
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+}
+$myCat=new Cat('cat','black',5);
+echo $myCat->getName();
+echo '<br>';
+echo $myCat->getColor();
+echo '<br>';
+echo $myCat->getWeight();
+?>
+
+<?php
+/* 2.Создать класс User с открытыми свойствами логин и пароль, конструктором класса, 
+получающим на вход значения логина и пароля,  и методом, выводящим на экран строку 
+«У пользователя с логином … пароль - …». Создать объект данного класса и, используя метод, вывести его логин и пароль.*/
+class User
+{
+    public string $login;
+    public string $password;
+    public function __construct(string $login,string $password)
+    {
+ $this->login=$login;
+ $this->password=$password;
+    }
+    public function getLogin()
+    {
+        return $this->login;
+    }
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    public function getV()
+    {
+        echo 'у пользователя с логином '.$this->getLogin();
+        echo '<br>';
+        echo'пароль '.$this->getPassword();
+    }
+
+}
+$myUser=new User('kkk','12345qwer');
+  $myUser->getV();
+?>
+
+<?php
+/*3.	Создать класс Book с закрытыми свойствами название и автор и методами, 
+позволяющими установить и считать значения этих свойств. 
+Создать два объекта данного класса и вывести на экран названия и авторов данных книг.*/ 
+class Book
+{
+    private string $name;
+    private string $author;
+    public function __construct(string $name,string $author)
+    {
+ $this->name=$name;
+ $this->author=$author;
+    }
+    public function getName()
+    {
+return $this->name;
+    }
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+}
+$myBook=new Book('kolobok','people');
+echo $myBook->getName();
+echo '<br>';
+echo $myBook->getAuthor();
+?>
+
+
+<?php
+/*3.4.	Создать класс Point с закрытыми свойствами x, y, конструктором класса,
+ получающим на вход значения координат и методами, позволяющими вывести значения
+  координат на экран. Создать объект данного класса и вывести значения координат на экран.*/ 
+class Point
+{
+    private string $x;
+    private string $y;
+    public function __construct(string $x,string $y)
+    {
+ $this->x=$x;
+ $this->y=$y;
+    }
+    public function getX()
+    {
+return $this->x;
+    }
+    public function getY()
+    {
+        return $this->y;
+    }
+    public function getPoint()
+    {
+        echo 'координата X '.$this->getX();
+        echo '<br>';
+        echo'координата Y '.$this->getY();
+    }
+
+}
+$myPoint=new Point('122','324');
+$myPoint->getPoint();
+?>
