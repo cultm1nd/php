@@ -1,0 +1,116 @@
+<?php
+//Задача 1. Напишите скрипт с классом, в котором есть закрытое статическое
+//целочисленное поле с начальным нулевым значением. В классе должен
+//быть описан статический метод, при вызове которого отображается текущее значение статического поля, после чего значение поля увеличивается на единицу.
+class Cl
+{
+   static $num=0;
+   public static function getNum()
+   {
+    echo self::$num;
+    self::$num++;
+   }
+}
+Cl::getNum();
+Cl::getNum();
+Cl::getNum();
+Cl::getNum();
+Cl::getNum();
+Cl::getNum();
+?>
+
+<?php
+//Задача 2. Разработайте приложение с классом Person с полями Name и Age. 
+//Создать список не менее 5 персон и вывести этот список на экран. 
+//Реализуйте добавление нового экземпляра класса в список.
+class Person
+{
+   public $name;
+   public $age;
+   public function __construct($name, $age)
+   {
+    $this->name=$name;
+    $this->age=$age;
+   }
+  
+}
+$personList=array();//массив списка
+//создаем список персон
+$person1=new Person("ivan",12);
+$person2=new Person("petr",15);
+$person3=new Person("nikolay",65);
+$person4=new Person("irina",10);
+$person5=new Person("svetlana",22);
+//добавка экземпляров в спмисок
+$personList[]=$person1;
+$personList[]=$person2;
+$personList[]=$person3;
+$personList[]=$person4;
+$personList[]=$person5;
+//вывод списка
+foreach($personList as $person)
+{
+    echo "Name: ".$person->name.", age: ".$person->age."<br>";
+}
+//обнова
+$newPers=new Person("maria",3);
+$personList[]=$newPers;
+//список с обновой
+echo "<br>New List";
+foreach($personList as $person)
+{
+    echo "<br>Name: ".$person->name.", age: ".$person->age."<br>";
+}
+?>
+
+<?php
+//Задача 3. Создать класс студент, имеющий имя, курс и идентификационный номер.
+//Определить конструкторы и метод вывода на экран информации об объекте. 
+//Создать public-производный класс - студент-дипломник, имеющий тему диплома.
+//Определить конструктор по умолчанию и метод печати. Определить методы переназначения названия диплома и идентификационного номера.
+class Student
+{
+   public $name;
+   public $course;
+   public $id;
+   public function __construct($name, $course, $id)
+   {
+    $this->name=$name;
+    $this->course=$course;
+    $this->id=$id;
+   }
+}
+class Diplom extends Student
+{
+    public $tema;
+public function __construct($name, $course, $id,$tema)
+{
+    $this->name=$name;
+    $this->course=$course;
+    $this->id=$id;
+ $this->tema=$tema;
+}
+public function setTema($tema)
+{
+$this->tema=$tema;
+}
+public function setId($id)
+{
+$this->id=$id;
+}
+}
+$diplom=new Diplom('ivan','4','1','web-app');
+echo "начальные данные: <br>".$diplom->tema."<br>";
+echo $diplom->id."<br>";
+echo "измененный данные: <br>";
+$diplom->setTema('IT');
+echo $diplom->tema."<br>";
+$diplom->setId('5');
+echo $diplom->id."<br>";
+?>
+Задача 4. Описать класс «комната», содержащий сведения о метраже, высоте потолков и количестве окон. Предусмотреть инициализацию с проверкой допустимости значений полей. В случае недопустимых значений полей выбрасываются исключения.
+Описать методы вычисления площади и объема комнаты и свойства для получения состояния объекта.
+Написать программу, демонстрирующую все разработанные элементы класса.
+Создать дочерний класс «комната». Предусмотреть метод для расчета необходимого количества обоев при ремонте.
+
+Задача 5. Реализуйте абстрактный класс User, а также классы Employee и Student, наследующие от него.
