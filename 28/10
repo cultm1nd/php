@@ -1,0 +1,151 @@
+<?php
+class Room
+{
+    public $area;
+    public $height;
+    public $windowAmount;
+    public function __construct($area, $height,$windowAmount)
+    {
+        $this->setArea($area);
+        $this->setHeight($height);
+        $this->setWindowAmount($windowAmount);
+    }
+    //a
+    public function setArea($area)
+    {
+    if($area>0)
+    {
+        $this->area=$area;
+    }
+    else
+    {
+    throw new Exception("недопустимое значение для метража комнаты");
+    }
+    }
+    public function getArea()
+    {
+        return  $this->area;
+    }
+//h
+    public function setHeight($height)
+    {
+        if($height>0)
+    {
+        $this->height=$height;
+    }
+    else
+    {
+    throw new Exception("недопустимое значение для высоты потолков");
+    }
+    } 
+
+    public function getHeight()
+    {
+        return  $this->area;
+    }
+
+    //w
+    public function setWindowAmount($windowAmount)
+    {
+         if($windowAmount>=0)
+    {
+        $this->windowAmount=$windowAmount;
+    }
+    else
+    {
+        throw new Exception("недопустимое значение для количества окон");
+    }   
+    }
+    public function getWindowAmount()
+    {
+        return  $this->windowAmount;
+    }
+    //cчитаю метраж
+    public function calcArea()
+    {
+        return $this->area;
+    }
+     //cчитаю объем
+     public function calcVolume()
+     {
+         return $this->area*$this->height;
+     }
+    }
+    try
+    {
+    $room=new Room(23,3,2);
+    echo"площадь комнаты= ".$room->calcArea()."<br>";
+    echo"объем= ".$room-> calcVolume()."<br>";
+    }
+    catch(Exception $e)
+    {
+echo "недопустимые значения перменных".$e->getMessage();
+    }
+
+?>
+
+<?php
+class Person
+{
+    public $name;
+    public $age;
+    public $weight;
+    public function __construct($name, $age,$weight)
+    {
+        $this->name=$name;
+        $this->age=$age;
+        $this->weight=$weight;
+    }
+    //inf
+    public function echoInf()
+    {
+        echo "имя: ".$this->name."<br>";
+        echo "возраст: ".$this->age."<br>";
+        echo "вес: ".$this->weight."<br>";
+    }
+    public function setAge($age)
+    {
+        $this->age=$age;
+    }
+    }
+    class Adult extends Person
+    {
+     private $numPassport;
+     public function __construct($name, $age,$weight,$numPassport)
+    {
+        parent::__construct($name, $age,$weight);
+        $this->numPassport=$numPassport;
+        
+    }
+      //inf
+      public function echoInf()
+      {
+        parent::echoInf();
+          echo "номер паспорта: ".$this->numPassport."<br>";
+      }
+      public function setAge($age)
+      {
+       if($age>=18)
+       {
+        $this->age=$age;
+       }
+       else
+       {
+       echo "человеку нет 18 лет";
+       }
+      }
+//номер паспорта
+      public function setNumPassport($numPassport)
+      {
+       $this->numPassport=$numPassport;
+      }
+    }
+    $person=new Person("Иван",20,70);
+    $person->echoInf();
+    $adult=new Adult("Анна",20,60,123456789);
+    $adult->setAge(17);
+    $adult->echoInf();
+    $adult->setNumPassport("274246542");
+    $adult->echoInf();
+    
+?>
