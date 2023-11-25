@@ -1,0 +1,226 @@
+<?php 
+$conn = new PDO("mysql:host=localhost;dbname=borovinskikh", "root", "");
+?>
+<!DOCTYPE html>
+<html>
+    <style>
+        h2
+        {
+           
+            text-align:center;
+            font-family:Arial;
+            color:dark;
+
+        }
+        body
+        {
+            background-color:#DCDCDC;
+        }
+        main{
+            margin-left:30px;
+            width:1000px;
+            height:300px;
+            background-color:white;
+            border-radius:10px;
+        }
+        main #inp{
+           width:800px;
+           height:40px;
+           margin-left:30px;
+           border-radius:5px;
+           border-width:thin;
+           border-color:#DCDCDC;
+           
+        }
+        p{
+          margin-left:30px;
+          font-family:Arial;
+        }
+        main #sel{
+           width:800px;
+           height:40px;
+           margin-left:30px;
+           border-radius:5px;
+           border-color:#DCDCDC;
+           
+        }
+        main #bt{
+           width:100px;
+           height:40px;
+           margin-left:30px;
+           border-radius:5px;
+           border:none;
+           background-color:#0000FF;
+           color:white;
+           
+        }
+        .p{
+            text-align:center;
+            font-family:Arial;
+            color:dark;
+            font-size:25px;
+        }
+        .bt{
+            width:150px;
+           height:40px;
+           margin-left:30px;
+           border-radius:5px;
+           border:none;
+           background-color:#0000FF;
+           color:white;
+        }
+        .zag
+        {
+            width:300px;
+           height:40px;
+           margin-left:30px;
+           border-radius:5px;
+           border:none;
+           background-color:#0000FF;
+           color:white;
+        }
+        </style>
+<head>
+<title>METANIT.COM</title>
+<meta charset="utf-8" />
+</head>
+<body>
+    <main>
+<h2>Добавить заметку</h2>
+<form action="" method="post">
+    <p><b>Название:</b></p>
+    <input type="text" name="name" id="inp" />
+    <p><b>Категория:</b></p>
+    <select name="category" id="sel">
+        <option value="1">фильм</option>
+        <option value="2">книга</option>
+    </select><br><br>
+    <input type="submit" value="Добавить" id="bt">
+    </main>
+</form>
+<?php
+if (isset($_POST["name"]) && isset($_POST["category"])) {
+    try{
+        $sql = "INSERT INTO notes (name_notes,id_category) VALUES ('".$_POST['name']."', '".$_POST["category"]."')";
+        $conn->query($sql);
+        
+    }
+    catch(PDOException $e){
+
+    }
+}
+
+$sql = "SELECT id_notes, name_category,name_notes FROM notes,category where notes.id_category=category.id ";
+$result = $conn->query($sql);
+while($row = $result->fetch())
+{
+
+    $rowsCount = count($result->fetch()); // количество полученных строк
+    echo "<p class='p'><b>Заметки</b></p>";
+    echo "<table><tr><th class='zag'>Название</th><th class='zag'>Категория</th><th class='zag'>Редактировать</th><th class='zag'>Удаление</th></tr>";
+    foreach($result as $row){
+        echo "<tr>";
+        echo "<td>" . $row["name_notes"] . "</td>";
+        echo "<td>" . $row["name_category"] . "</td>";
+        echo "<td><form action='update.php' method='get'>
+                    <input type='hidden' name='id_notes' value='" . $row["id_notes"] . "' />
+                    <input type='submit' value='Редактировать' class='bt'>
+            </form></td>";
+        echo "<td><form action='delete.php' method='post'>
+                    <input type='hidden' name='id_notes' value='" . $row["id_notes"] . "' />
+                    <input type='submit' value='Удалить' class='bt'>
+            </form></td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+} 
+
+
+?>
+
+
+
+
+<?php 
+$conn = new PDO("mysql:host=localhost;dbname=borovinskikh", "root", "");
+?>
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>METANIT.COM</title>
+<style>
+    body{
+        background-color: #DCDCDC;
+    }
+.h3
+{
+    text-align:center;
+            font-family:Arial;
+            color:dark;
+}
+</style>
+<meta charset="utf-8" />
+</head>
+<body>
+<?php
+// если запрос GET
+if($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["id_notes"]))
+{
+    $noteid =($_GET["id_notes"]);
+    $sql = "SELECT id_notes,name_notes,name_category FROM notes,category WHERE id_notes = '$noteid' and notes.id_category=category.id";
+    if($result = $conn->query($sql)){
+    
+            foreach($result as $row){
+                $id_notes = $row["id_notes"];
+                $name_notes = $row["name_notes"];
+                $category = $row["name_category"];
+            }
+            echo "<h3 class='h3'>Редактировать заметку</h3>
+                <form method='post'>
+                    <input type='hidden' name='id_notes' value='$id_notes' />
+                    <p>Название:
+                    <input type='text' name='name_notes' value='$name_notes' /></p>
+                    <p>Категория:
+                    <select name='category' >
+                    <option value='1'>фильм</option>
+                    <option value='2'>книга</option>
+                    </select></p>
+                    <input type='submit' value='Сохранить'>
+            </form>";
+    } 
+}
+else if (isset($_POST["id_notes"]) && isset($_POST["name_notes"]) && isset($_POST["category"])) {
+      
+    $id_notes= ($_POST["id_notes"]);
+    $name_notes =($_POST["name_notes"]);
+    $category = ($_POST["category"]);
+    $sql = "UPDATE notes SET id_notes = '$id_notes', name_notes = '$name_notes' , id_category='$category' WHERE id_notes = '$id_notes'";
+    if($result = $conn->query($sql)){
+        header("Location: notes.php");
+    }
+}
+else{
+    echo "Некорректные данные";
+}
+
+?>
+</body>
+</html>
+
+
+
+
+<?php
+if(isset($_POST["id_notes"]))
+{
+    $conn = new PDO("mysql:host=localhost;dbname=borovinskikh", "root", "");
+    $id_notes =($_POST["id_notes"]);
+    $sql = "DELETE FROM notes WHERE id_notes = '$id_notes'";
+    if($conn->query($sql)){
+         
+        header("Location: notes.php");
+    }
+}
+?>
+
