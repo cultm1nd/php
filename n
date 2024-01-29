@@ -1,0 +1,103 @@
+Вот пример кода, который покажет вам, как реализовать меню с названиями всех страниц сайта и авторизацию пользователя с использованием сессии:
+
+HTML (header.php):
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой сайт</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.php">Главная</a></li>
+                <li><a href="about.php">О нас</a></li>
+                <li><a href="contact.php">Контакты</a></li>
+                <li><a href="login.php">Авторизация</a></li>
+            </ul>
+        </nav>
+        <?php
+        session_start();
+        if (isset($_SESSION['username'])) {
+            echo "<p>Привет, " . $_SESSION['username'] . "!</p>";
+        }
+        ?>
+    </header>
+
+
+PHP (login.php):
+<?php
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Проверка имени пользователя и пароля (здесь должна быть проверка ваших данных из базы данных)
+    $username = "user123"; // Замените на реальное имя пользователя из базы данных
+    $password = "password123"; // Замените на реальный пароль из базы данных
+
+    if ($_POST["username"] == $username && $_POST["password"] == $password) {
+        $_SESSION['username'] = $username; // Сохранение имени пользователя в сессии
+        header("Location: index.php"); // Перенаправление на главную страницу
+    } else {
+        echo "Неверное имя пользователя или пароль";
+    }
+}
+?>
+
+
+В этом примере, мы создали файл header.php, который содержит общий HTML-код для всех страниц сайта, включая меню и отображение имени пользователя. В файле login.php мы обрабатываем отправленные данные из формы авторизации, проверяем их и сохраняем имя пользователя в сессии при успешной авторизации.
+
+Теперь вы можете включить header.php на всех страницах вашего сайта, чтобы отображать меню и имя пользователя в верхней части сайта.
+
+
+HTML (index.php):
+<?php
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
+    // Проверка и сохранение данных пользователя (здесь должна быть проверка ваших данных в базе данных)
+    $username = $_POST["username"]; // Получение имени пользователя из формы
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT); // Хеширование пароля
+
+    // Сохранение данных пользователя в базе данных или другом хранилище
+
+    // Авторизация пользователя
+    $_SESSION['username'] = $username; // Сохранение имени пользователя в сессии
+    header("Location: index.php"); // Перенаправление на главную страницу
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой сайт</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.php">Главная</a></li>
+                <li><a href="about.php">О нас</a></li>
+                <li><a href="contact.php">Контакты</a></li>
+                <li><a href="login.php">Авторизация</a></li>
+            </ul>
+        </nav>
+        <?php
+        if (isset($_SESSION['username'])) {
+            echo "<p>Привет, " . $_SESSION['username'] . "!</p>";
+        }
+        ?>
+    </header>
+    <main>
+        <h1>Регистрация</h1>
+        <form method="post" action="">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required><br>
+            <input type="submit" name="register" value="Зарегистрироваться">
+        </form>
+    </main>
+</body>
+</html>
+
+
+В этом примере мы добавили форму регистрации на главной странице сайта. При отправке формы, данные пользователя обрабатываются в том же файле index.php. Пароль хешируется с использованием функции password_hash, а затем имя пользователя сохраняется в сессии, чтобы пользователь был автоматически авторизован после успешной регистрации.
+
+Обратите внимание, что этот пример не включает проверку данных пользователя на стороне сервера, такую как проверка уникальности имени пользователя или дополнительная валидация пароля. В реальном приложении необходимо добавить эти проверки.
