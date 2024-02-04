@@ -101,3 +101,122 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
 В этом примере мы добавили форму регистрации на главной странице сайта. При отправке формы, данные пользователя обрабатываются в том же файле index.php. Пароль хешируется с использованием функции password_hash, а затем имя пользователя сохраняется в сессии, чтобы пользователь был автоматически авторизован после успешной регистрации.
 
 Обратите внимание, что этот пример не включает проверку данных пользователя на стороне сервера, такую как проверка уникальности имени пользователя или дополнительная валидация пароля. В реальном приложении необходимо добавить эти проверки.
+
+
+
+register.php
+<form action="" method="post">
+<input name="login" placeholder="Логин">
+<input name="password" type="password" placeholder="Пароль">
+<input type="password" name="confirm" placeholder="Повторите пароль">
+<input type="submit">
+</form>
+
+<a href="sessionAuth.php">Вернуться</a>
+
+<?php
+session_start();
+
+if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
+    $link = mysqli_connect("localhost", "root", "", "borovinskikhAuth");
+
+    $password = $_POST['password'];
+    $confirm = $_POST['confirm'];
+
+    if ($password == $confirm) {
+        $login = $_POST['login'];
+        $query = "SELECT * FROM users WHERE login='$login'";
+        $user = mysqli_fetch_assoc(mysqli_query($link, $query));
+        if (empty($user)) {
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $query = "INSERT INTO users SET login='$login', password='$password', status_id='1'";
+            mysqli_query($link, $query);
+            $_SESSION['auth'] = true;
+            $id = mysqli_insert_id($link);
+            $_SESSION['id'] = $id;
+            echo 'Успешно!';
+        } else {
+        echo 'Логин занят';
+        }
+    } else {
+        echo 'Пароли не совпадают';
+    }
+    }
+
+?>
+
+
+auth.php
+<?php
+session_start();
+
+if (empty($_SESSION['auth'])) {
+    echo 'Пользователь не авторизирован';
+} else {
+    echo 'Пользователь авторизирован<br>';
+    echo '<a href="account.php">Личный кабинет</a><br>';
+    echo '<a href="logout.php">Выйти</a>';
+}
+
+?>
+
+<form action="" method="post">
+<input name="login" placeholder="Логин">
+<input name="password" type="password" placeholder="Пароль">
+<input type="submit">
+</form>
+<a href="register.php">Регистрация</a>
+
+<?php
+if (!empty($_POST['password']) && !empty($_POST['login'])) {
+    $link = mysqli_connect("localhost", "root", "", "borovinskikhAuth");
+$login = $_POST['login'];
+$query = "SELECT users.*, role.name as status FROM users LEFT JOIN role ON users.status_id=role.id WHERE login='$login'";
+$result = mysqli_query($link, $query);
+$user = mysqli_fetch_assoc($result);
+
+if (!empty($user)) {
+$hash = $user['password'];
+        if (password_verify($_POST['password'], $hash)) {
+    $_SESSION['auth'] = true;
+    $_SESSION['status'] = $user['status'];
+    $_SESSION['id'] = $user['id'];
+    echo "<meta http-equiv='refresh' content='0'>";
+    } else {
+    echo 'Неправильный пароль!';
+    }
+} else {
+    echo 'Пользователя с таким логином нет';
+}
+}
+?>
+
+
+
+account.php
+<?php
+session_start();
+$link = mysqli_connect("localhost", "root", "", "borovinskikhAuth");
+$id = $_SESSION['id'];
+$query = "SELECT * FROM users WHERE id='$id'";
+$result = mysqli_query($link, $query);
+$user = mysqli_fetch_assoc($result);
+?>
+
+<form action="" method="post">
+    <label for="">Сменить имя:</label>
+<input name="name" value="<? echo $user['name']; ?>">
+<input type="submit" name="submit">
+</form>
+
+<?php
+if (!empty($_POST['submit'])) {
+$name = $_POST['name'];
+$query = "UPDATE users SET name='$name' WHERE id=$id";
+mysqli_query($link, $query);
+}
+?>
+
+<a href="changePassword.php">Сменить пароль</a>
+<a href="delete.php">Удалить аккаунт</a>
+<a href="sessionAuth.php">Вернуться</a>
