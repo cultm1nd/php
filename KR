@@ -1,0 +1,520 @@
+index.php
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Зоопарк</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="php"><!--обращение к юзеру-->
+		<?php
+		session_start();
+		if (isset($_SESSION['name'])) {
+			echo "Добро пожаловать, " . $_SESSION['name'];
+		} else {
+			echo "";
+		}
+		?>
+	</div>
+	<div id="wrap">
+		<div id="header">
+		</div>
+		<div id="page">
+			<div id="menu">
+				<div id="sidemenu">
+					<!--h2>Навигация</h2-->
+					<ul>
+						<?php
+						$link = new mysqli("localhost", "root", "", "borovinskikh_kr");
+						$name_page = $_POST['name_page'];
+						$query = "SELECT name_page, link FROM pages";
+						$result = mysqli_query($link, $query);
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo "<li><a href='" . $row['link'] . "'>" . $row['name_page'] . "</a></li> <br>";
+							}
+						} else {
+							echo "Строки не найдены";
+						}
+						?>
+					</ul>
+				</div>
+			</div>
+			<div id="content">
+				<h2>
+					<a href="#" rel="bookmark" title="Фотографии">Немного о зоопарке</a>
+				</h2>
+				<p>
+					Мы рады приветствовать всех на нашем сайте. Надеемся, что здесь вы найдете для себя много
+					интересного. А ваши отзывы и пожелания, оставленные в гостевой книге, помогут нам сделать сайт
+					Пермского зоопарка еще лучше. До новых встреч на наших страницах.
+				<h2><span class="seo">С большим уважением ко всем, Людмила Кардашова<br />
+						Директор Пермского зоопарка</span></h2>
+
+				Пермский зоопарк начал свою историю в 1922 году с небольшого "Уголка живой природы" при Пермском
+				краеведческом музее, а с 1933 года стал работать как самостоятельная организация, получившая название
+				зоологического сада. На существующую территорию зоосад был переведен в 1931г. За счет прилегающих
+				строений площадь постепенно увеличивалась и сейчас составляет 2,2 га. Сюда входит и отдельный
+				двухэтажный дом "Акватеррариум", открытый для посетителей в 1989 году. В мае 2001 года при принятии
+				нового Устава Пермский зоологический сад был переименован в Пермский зоопарк.<br /><br />
+
+				Месторасположение зоопарка удобно для посетителей. Он находится в центре Перми над набережной реки Камы
+				и является одним из любимых мест отдыха горожан. Рядом расположены областной краеведческий музей,
+				всемирно известная художественная галерея и выставочные залы. Проходящие поблизости центральные улицы
+				города - Комсомольский проспект и ул. Сибирская - выходят на набережную Камы. Напротив зоопарка
+				расположена гостиница "Турист".
+				</p>
+
+			</div>
+			<div class="clear"></div>
+			<div id="browse">
+				<h2 class="subhead">&nbsp;</h2>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+
+
+login.php
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Зоопарк</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="php"><!--обращение к юзеру-->
+        <?php
+        session_start();
+        if (isset($_SESSION['name'])) {
+            echo "Добро пожаловать, " . $_SESSION['name'];
+        } else {
+            echo "";
+        }
+        ?>
+    </div>
+    <div id="wrap">
+        <div id="header">
+        </div>
+        <div id="page">
+            <div id="menu">
+                <div id="sidemenu">
+                    <!--h2>Навигация</h2-->
+                    <ul>
+                        <?php
+                        $link = new mysqli("localhost", "root", "", "borovinskikh_kr");
+                        $name_page = $_POST['name_page'];
+                        $query = "SELECT name_page, link FROM pages";
+                        $result = mysqli_query($link, $query);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<li><a href='" . $row['link'] . "'>" . $row['name_page'] . "</a></li> <br>";
+                            }
+                        } else {
+                            echo "Строки не найдены";
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="authorization">
+                <div class="authorization_content">
+                    <h2 id="text2">Авторизация</h2><br>
+                    <form action="" method="POST" id="forma">
+                        <input name="login" placeholder="Введите логин" required="" value="<?php echo isset($_POST['login']) ? $_POST['login'] : ''; ?>"><br><br>
+                        <input name="password" type="password" placeholder="Введите пароль" required="" value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>"><br><br>
+                        <input type="submit" value="Авторизоваться" id="but">
+                    </form><br>
+                    <?php
+                    session_start();
+                    if (!empty($_POST['password']) and !empty($_POST['login'])) {
+                        $link = new mysqli("localhost", "root", "", "borovinskikh_kr");
+                        $login = $_POST['login'];
+                        $password = $_POST['password'];
+                        $query = "SELECT * FROM user WHERE login='$login' AND password='$password'";
+                        $result = mysqli_query($link, $query);
+                        $user = mysqli_fetch_assoc($result);
+                        if (!empty($user)) {
+                            $_SESSION['auth'] = true;
+                            $_SESSION['id'] = $user['id'];
+                            $_SESSION['name'] = $user['name'];
+                            header("Location: index.php");
+                        } else {
+                            echo '<p id=text>Пароль или логин не подошел</p>';
+                            $_SESSION['auth'] = false;
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div id="browse">
+                <h2 class="subhead">&nbsp;</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+photo.php
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8;charset=utf-8" />
+	<title>Зоопарк</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="php"><!--обращение к юзеру-->
+		<?php
+		session_start();
+		if (isset($_SESSION['name'])) {
+			echo "Добро пожаловать, " . $_SESSION['name'];
+		} else {
+			echo "";
+		}
+		?>
+	</div>
+	<div id="wrap">
+		<div id="header">
+		</div>
+		<div id="page">
+			<div id="menu">
+				<div id="sidemenu">
+					<!--h2>Навигация</h2-->
+					<ul>
+						<?php
+						$link = new mysqli("localhost", "root", "", "borovinskikh_kr");
+						$name_page = $_POST['name_page'];
+						$query = "SELECT name_page, link FROM pages";
+						$result = mysqli_query($link, $query);
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo "<li><a href='" . $row['link'] . "'>" . $row['name_page'] . "</a></li> <br>";
+							}
+						} else {
+							echo "Строки не найдены";
+						}
+						?>
+					</ul>
+				</div>
+			</div>
+			<div id="content">
+				<h2>
+					<a href="#" rel="bookmark" title="Фотографии">Фотографии</a>
+				</h2>
+				<p>
+					<a href="pictures/16s.jpg"><img src="pictures/16s.jpg" width="170" height="256" /></a>
+					<a href="pictures/18s.jpg"><img src="pictures/18s.jpg" width="170" height="256" /></a>
+					<a href="pictures/21s.JPG"><img src="pictures/21s.JPG" width="170" height="256" /></a>
+					<a href="pictures/22s.JPG"><img src="pictures/22s.JPG" width="170" height="256" /></a>
+					<a href="pictures/23s.JPG"><img src="pictures/23s.JPG" width="170" height="256" /></a>
+					<a href="pictures/24s.JPG"><img src="pictures/24s.JPG" width="170" height="256" /></a>
+
+					<a href="pictures/7s.jpg"><img src="pictures/7s.jpg" width="200" height="133" /></a>
+					<a href="pictures/6s.jpg"><img src="pictures/6s.jpg" width="200" height="133" /></a>
+					<a href="pictures/2m.jpg"><img src="pictures/2m.jpg" width="134" height="94" /></a>
+					<a href="pictures/9s.JPG"><img src="pictures/9s.JPG" width="200" height="133" /></a>
+					<a href="pictures/10s.jpg"><img src="pictures/10s.jpg" width="200" height="133" /></a>
+					<a href="pictures/3m.jpg"><img src="pictures/3m.jpg" width="140" height="88" /></a>
+					<a href="pictures/11s.jpg"><img src="pictures/11s.jpg" width="200" height="133" /></a>
+					<a href="pictures/12s.JPG"><img src="pictures/12s.JPG" width="200" height="133" /></a>
+					<a href="pictures/4m.jpg"><img src="pictures/4m.jpg" width="140" height="90" /></a>
+					<a href="pictures/13s.JPG"><img src="pictures/13s.JPG" width="200" height="133" /></a>
+					<a href="pictures/20s.JPG"><img src="pictures/20s.JPG" width="200" height="133" /></a>
+					<a href="pictures/1m.jpg"><img src="pictures/1m.jpg" width="94" height="103" /></a>
+					<a href="pictures/25s.JPG"><img src="pictures/25s.JPG" width="200" height="133" /></a>
+					<a href="pictures/26s.JPG"><img src="pictures/26s.JPG" width="200" height="133" /></a>
+					<a href="pictures/27s.JPG"><img src="pictures/27s.JPG" width="200" height="133" /></a>
+					<a href="pictures/17s.jpg"><img src="pictures/17s.jpg" width="200" height="133" /></a>
+					<a href="pictures/4s.jpg"><img src="pictures/4s.jpg" width="200" height="133" /></a>
+					<a href="pictures/5s.jpg"><img src="pictures/5s.jpg" width="200" height="133" /></a>
+					<a href="pictures/3s.jpg"><img src="pictures/3s.jpg" width="200" height="133" /></a>
+					<br />
+				<h2><span class="seo">А так же вы можите скачать аудио-записи</span></h2>
+				<a href="pictures/iz_v_mire_zivotnih.mid"><img class="nobord" src="pictures/a1.jpg" width="28" height="38" /> В мире животных (mp3)</a><br />
+				<h2><span class="seo">... и видео-записи</span></h2>
+				<a href="pictures/LenZoo_Butterfly.wmv" title="Выставка бабочек"><img class="nobord" src="pictures/v1.jpg" width="155" height="120" /></a>
+				<a href="pictures/zoo_prezent.avi" title="презентация зоопарка"><img class="nobord" src="pictures/v2.jpg" width="155" height="120" /></a>
+				</p>
+			</div>
+			<div class="clear"></div>
+			<div id="browse">
+				<h2 class="subhead">&nbsp;</h2>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+
+
+
+about.php
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8;charset=utf-8" />
+	<title>Зоопарк</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="php"><!--обращение к юзеру-->
+		<?php
+		session_start();
+		if (isset($_SESSION['name'])) {
+			echo "Добро пожаловать, " . $_SESSION['name'];
+		} else {
+			echo "";
+		}
+		?>
+	</div>
+	<div id="wrap">
+		<div id="header">
+		</div>
+		<div id="page">
+			<div id="menu">
+				<div id="sidemenu">
+					<!--h2>Навигация</h2-->
+					<ul>
+						<?php
+						$link = new mysqli("localhost", "root", "", "borovinskikh_kr");
+						$name_page = $_POST['name_page'];
+						$query = "SELECT name_page, link FROM pages";
+						$result = mysqli_query($link, $query);
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo "<li><a href='" . $row['link'] . "'>" . $row['name_page'] . "</a></li> <br>";
+							}
+						} else {
+							echo "Строки не найдены";
+						}
+						?>
+					</ul>
+					<?php
+					?>
+				</div>
+			</div>
+			<div id="content">
+				<h2>
+					<a href="#" rel="bookmark" title="Фотографии">Как к нам добраться</a>
+					<span class="seo">Адрес</span>
+				</h2>
+				Адрес зоопарка: <br />
+				Россия, 614000, г. Пермь, ул. Орджоникидзе, 10. <br /><br />
+
+				Проезд: <br />
+				троллейбусом № 1, маршрутным такси № 3 до остановки "Художественная галерея";<br />
+				троллейбусами № 5,7, автобусом №7 до ост. "Советская";<br />
+				трамваями № 3,4,7,12,13, автобусами № 13,53 до ост. "ЦУМ"<br /><br />
+
+				Зоопарк работает круглый год без выходных дней:<br />
+				с 9 до 20 часов - с 1 апреля по 30 сентября,<br />
+				с 10 до 18 часов - с 1 октября по 31 марта,<br />
+				кассы закрываются на 1 час раньше.<br /><br />
+
+				<h2><span class="seo">Наши расценки</span></h2>
+				Цена взрослого билета (от 12 лет) - 80 руб., детского (от 4 до 12 лет) - 40 руб. <br /><br />
+
+				Платные услуги: <br />
+				Катание на животных, экскурсии и лекции. <br />
+				Катание верхом на лошади или пони - 40 рублей, <br />
+				Катание на пони в тележке - 30 рублей.<br />
+				Акватеррариум - взрослый билет 70 рублей, детский билет стоит 30 рублей. <br />
+				Адрес Акватеррариума: Комсомольский проспект, 2. Вход отдельно от зоопарка. <br /><br /><br />
+
+
+				Экскурсии по зоопарку заказываются по телефону <b>2-181-456</b>. Минимальная группа экскурсантов – 10
+				человек. Экскурсионные билеты (вместо входных) стоят 90 и 50 рублей для взрослых и детей соответственно.
+				На 15 детей один сопровождающий – бесплатно.<br /><br />
+
+				Экскурсии проводятся обзорные и тематические, в традиционной, костюмированной и игровой формах и
+				рассчитаны на любой возраст экскурсантов.<br /><br />
+
+				На территории зоопарка есть детский уголок с качелями, каруселями, лесенками, работает буфет; в летнее
+				время работают киоски по продаже мороженого, выпечки, прохладительных напитков, сладостей, а так же
+				продаются воздушные шары, детские игрушки, печатная продукция, работает беспроигрышная лотерея.
+				<br /><br />
+
+				В летнее время на территории зоопарка ежедневно функционирует детская игровая площадка и контактный
+				зоопарк «Детский дворик» (бесплатно). В контактном зоопарке дети могут тесно пообщаться с ягнятами,
+				кроликами, курами разных пород.<br /><br />
+				<b>E-mail: zoo@perm.raid.ru</b><br /><br />
+				<h2><span class="seo">Карта зоопарка</span></h2>
+				<p>
+					<a href="pictures/karta.gif">
+						<img src="pictures/karta.gif" width="376" height="413" />
+					</a>
+				</p>
+			</div>
+			<div class="clear"></div>
+			<div id="browse">
+				<h2 class="subhead">&nbsp;</h2>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+
+style.css
+/* CSS - таблица стилей */
+
+* {	margin: 0px; padding: 0px;}								/* Убираем везде все отступы */
+body{
+	background-color:#c8c2aa;								/* Цвет общего фона */
+	font-family:Verdana, Arial, Helvetica, sans-serif;		/* Основной шрифт */
+	font-size:12px;											/* Основной размер шрифта */
+	color:#666666;											/* Основной цвет шрифта - серый */
+}
+#wrap {													/* Страница */
+	background:url(images/wrapbg.jpg) repeat-y;				/* Фон страницы */
+	width:927px;											/* Ширина страницы */
+	margin:25px auto 25px auto;								/* отступы страницы сверху и снизу */
+}
+
+/* <HEADER> */										/* ШАПКА */
+#header {												/* Рисунок на шапке */
+	background:url(images/header.jpg) no-repeat;
+	height:341px;
+}
+/* </HEADER> */
+
+#page {													
+	padding:0px 10px 0px 10px;								/* Отступы вокруг страницы */
+}
+/* <MENU> */
+#menu {													/* Меню */
+	float:left;												/* Слева */
+	background:url(images/sidemenu.jpg) no-repeat;			/* Фон ввиде блокнота */
+	width:180px;											/* Ширина */
+	height:382px;											/* Высота */
+	display: block;
+	padding: 95px 45px 0px 40px;							/* Отступы */
+}
+#sidemenu ul {
+	display:block;
+	list-style:none;										/* убрать маркеры (точки) в списке меню */
+}
+#sidemenu li {											/* пункт меню */
+	display:block;
+	height:26px;											/* высота пунктов меню */
+	border-top:solid 1px #FFFFFF;							/* белая черточка сверху над пунктами меню */
+}
+#sidemenu a, #sidemenu a:visited{						/* пункт меню (ссылка) */
+	display:block;
+	height:20px;											
+	padding:5px 5px 0px 5px;
+	color:#666666;
+	text-decoration:none;
+	border-bottom:solid 1px #DFCD95;
+}
+#sidemenu a:hover, .current_page_item{
+	background:#ffffcc;										/* Желтенький цвет фона меню при наведении */
+}
+/* </MENU> */
+
+/* <CONTENT> */
+#content {
+	margin:0px 0px 0px 275px;
+	padding:0px 20px 0px 5px;
+}
+#content p {
+	line-height:22px;
+	margin:0px 0px 25px 0px;
+}
+#content h2 {
+	font-family:Georgia, "Times New Roman", Times, serif; font-weight:normal;
+	font-size:26px;
+	color:#666600;
+	display:block;
+	margin-bottom:20px;
+}
+#content h2 a {
+	font-family:Georgia, "Times New Roman", Times, serif; font-weight:normal;
+	font-size:26px;
+	color:#666600;
+	text-decoration:none;
+}
+
+#content a, #content a:visited  {
+	color:#999900;
+}
+#content a:hover {
+	color:#000000;
+	text-decoration:none;
+}
+#content h2 .seo {
+	display:block;
+	text-align:right;
+	font-size:10px;
+	color:#999999;
+	background:#efefef;
+	padding:3px;
+}
+#content img {											/* Рамка вокруг рисунков */
+	background:#efefef;
+	margin:2px;
+	padding:4px;
+	border:solid 1px #999999;
+}
+/* </CONTENT> */
+
+/* <BOTTOM> */
+#browse {												/* Подвал (рисунок-полоска внизу) */
+	height:111px;											/* Высота */
+	background:url(images/postbott.jpg) no-repeat;			/* Картинка */
+}
+/* </BOTTOM> */
+
+#content img.nobord{
+	margin:0;
+	padding:0;
+	border:0;
+}
+.authorization {
+	margin: 0 auto;
+	text-align: center;
+}
+#text2 {
+	color:#3f6b3f;
+	text-align: center;
+}
+#but {
+	background-color: #3f6b3f;
+	color: white;
+	font-size: 18px;
+	padding: 5px;
+}
+#forma input {
+	width: 200px;
+	height: 30px;
+	border-radius: 10px;
+	outline: none;
+	padding: 5px;
+}
+#php {
+	color:#3f6b3f;
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	margin-top: 20px;
+}
